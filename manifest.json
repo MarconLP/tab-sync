@@ -1,0 +1,22 @@
+{
+  "name": "tab-sync",
+  "version": "1.0",
+  "description": "",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup/build/index.html"
+  },
+  "background": {
+    "service_worker": "background/background.js"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": false
+  },
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "storage",
+    "alarms"
+  ]
+}

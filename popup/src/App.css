@@ -1,0 +1,101 @@
+.App {
+  border: 1px solid black;
+  height: 540px;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 8px;
+  font-size: 14px;
+}
+
+.devices {
+  height: 25px;
+  display: flex;
+  flex-direction: row;
+}
+
+.devices > div {
+  flex-grow: 1;
+  flex-basis: 0;
+  text-align: center;
+  line-height: 25px;
+  cursor: pointer;
+  border-radius: 1px;
+}
+
+.devices .sync {
+  flex: 0 10px;
+}
+
+.devices > div:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+
+.deviceList {
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: row;
+}
+
+.windows {
+  margin-top: 8px;
+  min-width: 360px;
+  margin-right: 8px;
+  width: 360px;
+  overflow-y: auto;
+  font-size: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+.tabs {
+  margin-top: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.tabs:first-of-type {
+  margin-top: 0;
+}
+
+.tabs > div {
+  box-sizing: border-box;
+  height: 35px;
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.tabs > div:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+
+.tabs > div > div {
+  display: flex;
+  align-items: center;
+}
+
+.tabs > div > div:first-of-type {
+  flex: 1 0;
+  min-width: 0;
+  margin-right: 10px;
+}
+
+.tabs > div > div:last-of-type > svg {
+  height: 15px;
+  width: 15px;
+}
+
+.tabs .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tabs .favicon {
+  height: 15px;
+  width: 15px;
+  margin-right: 10px;
+}
