@@ -9,7 +9,7 @@ function App() {
     const [view, setView] = useState(0)
     const [devices, setDevices] = useState(null)
 
-    useEffect(async () => {
+    const syncTabs = async () => {
         let data = {
             name: (await chrome.storage.local.get(['device_name'])).device_name,
             chromeSession: {
@@ -24,16 +24,26 @@ function App() {
             devices = x.devices.filter(x => x.name !== data.name)
         })
 
-        devices = [data, ...devices]
-        setDevices({devices: devices})
+        setDevices([data, ...devices])
+    }
+
+    chrome.storage.onChanged.addListener(changes => {
+        if (changes.devices) {
+            console.log(changes.devices)
+            syncTabs()
+        }
+    })
+
+    useEffect(() => {
+        syncTabs()
     }, [])
 
     if (!devices) return <div className="App">loading</div>
     return (
         <div className="App">
             <DeviceList devices={devices} setView={setView} view={view} />
-            <div className="deviceList">
-                {devices.devices.map(device => {
+            <div className="windowList">
+                {devices.map(device => {
                     return (
                         <div className="windows" key={device.name} style={{transform: `translateX(-${view * 368}px)`}}>
                             {device.chromeSession.windows.map(window => {

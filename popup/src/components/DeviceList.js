@@ -1,14 +1,18 @@
 /*global chrome*/
 import axios from "axios";
+import {ReactComponent as RotateIcon} from "../assets/rotate.svg";
+import {useState} from "react";
 
 function DeviceList(props) {
+    const [rotating, setRotating] = useState(false)
+
     const handleDelete = async (e, device) => {
         if (!(e.shiftKey && e.altKey)) return
 
         const token = (await chrome.storage.local.get(['auth_token'])).auth_token
 
         await axios({
-            url: `http://localhost:3000/${token}`,
+            url: `https://tab-sync-backend.vercel.app/${token}`,
             method: 'DELETE',
             data: {
                 name: device.name
@@ -16,19 +20,34 @@ function DeviceList(props) {
         })
     }
 
+    const handleSync = () => {
+        if (rotating) return
+        setRotating(true)
+        setTimeout(() => setRotating(false), 1000)
+
+        chrome.runtime.sendMessage('sync_tabs')
+    }
+
     return (
-        <div className="devices">
-            {props.devices.devices.map((device, i) => {
-                return (
-                    <div
-                        onContextMenu={(e) => handleDelete(e, device)}
-                        key={device.name}
-                        onClick={() => props.setView(i)}
-                        className={`${i === props.view ? 'active-device' : ''}`}>
-                        <span>{device.name}</span>
-                    </div>
-                )
-            })}
+        <div className="deviceList">
+            <div className="devices">
+                {props.devices.map((device, i) => {
+                    return (
+                        <div
+                            onContextMenu={(e) => handleDelete(e, device)}
+                            key={device.name}
+                            onClick={() => props.setView(i)}
+                            className={`${i === props.view ? 'active-device' : ''}`}>
+                            <span>{device.name}</span>
+                        </div>
+                    )
+                })}
+            </div>
+            <div className={`sync`} onClick={handleSync}>
+                <div className={`icon ${rotating ? 'rotate' : ''}`}>
+                    <RotateIcon />
+                </div>
+            </div>
         </div>
     )
 }

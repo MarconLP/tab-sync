@@ -35,7 +35,6 @@ try {
             .then(response => response.json())
             .then(result => {
                 chrome.storage.local.set({ devices: result.devices })
-                console.log(result)
             })
             .catch(error => console.log('error', error));
 
@@ -49,8 +48,14 @@ try {
     }
 
     chrome.alarms.onAlarm.addListener(e => {
-        if (e.name !== "sync_tabs") return
-        update()
+        if (e.name === "sync_tabs") update()
+    })
+
+    chrome.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
+        if (msg === 'sync_tabs') {
+            update()
+            sendResponse('OK')
+        }
     })
 
 } catch (e) {
