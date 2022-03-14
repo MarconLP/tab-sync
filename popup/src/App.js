@@ -3,6 +3,7 @@ import './App.css';
 import * as React from 'react';
 import {useEffect, useState} from "react";
 import TabList from "./components/TabList";
+import DeviceList from "./components/DeviceList";
 
 function App() {
     const [view, setView] = useState(0)
@@ -30,18 +31,7 @@ function App() {
     if (!devices) return <div className="App">loading</div>
     return (
         <div className="App">
-            <div className="devices">
-                {devices.devices.map((device, i) => {
-                    return (
-                        <div
-                            key={device.name}
-                            onClick={() => setView(i)}
-                            className={`${i === view ? 'active-device' : ''}`}>
-                            <span>{device.name}</span>
-                        </div>
-                    )
-                })}
-            </div>
+            <DeviceList devices={devices} setView={setView} view={view} />
             <div className="deviceList">
                 {devices.devices.map(device => {
                     return (
