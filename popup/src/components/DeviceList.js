@@ -44,9 +44,7 @@ function DeviceList(props) {
                 })}
             </div>
             <div className={`sync`} onClick={handleSync}>
-                <div className={`icon ${rotating ? 'rotate' : ''}`}>
-                    <RotateIcon />
-                </div>
+                <RotateIcon className={`icon ${rotating ? 'rotate' : ''}`}/>
             </div>
         </div>
     )
