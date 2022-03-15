@@ -83,7 +83,7 @@
   margin-top: 0;
 }
 
-.tabs > div {
+.tab {
   box-sizing: border-box;
   height: 35px;
   padding: 8px;
@@ -94,22 +94,22 @@
   cursor: pointer;
 }
 
-.tabs > div:hover {
+.tab:hover {
   background-color: rgba(0,0,0,0.1);
 }
 
-.tabs > div > div {
+.tab > div {
   display: flex;
   align-items: center;
 }
 
-.tabs > div > div:first-of-type {
+.tab > div:first-of-type {
   flex: 1 0;
   min-width: 0;
   margin-right: 10px;
 }
 
-.tabs > div > div:last-of-type > svg {
+.tab > div:last-of-type > svg {
   height: 15px;
   width: 15px;
 }
@@ -118,6 +118,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.tabs .tab-group {
+  min-width: 15px;
+  height: 15px;
+  width: 15px;
+  margin-right: 10px;
+  background: grey;
+  border-radius: 50%;
 }
 
 .tabs .favicon {
