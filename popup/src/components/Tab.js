@@ -19,7 +19,7 @@ function Tab(props) {
 
     let color = ''
     if (props.tab.groupId > 0) {
-        color = props.tabGroups.find(x => x.id === props.tab.groupId).color
+        color = colorMap[props.tabGroups.find(x => x.id === props.tab.groupId).color]
     }
 
     return (
