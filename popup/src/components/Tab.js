@@ -17,10 +17,17 @@ function Tab(props) {
         orange: '#f9903e'
     }
 
+    let color = ''
+    if (props.tab.groupId > 0) {
+        color = props.tabGroups.find(x => x.id === props.tab.groupId).color
+    }
+
     return (
         <div key={props.tab.id} className="tab">
             <div>
-                <div className={`${groupId > 0 ? 'tab-group' : ''}`}> </div>
+                <div
+                    style={{background: color}}
+                    className={`${groupId > 0 ? 'tab-group' : ''}`}> </div>
                 <img
                     src={favIconUrl ? favIconUrl : 'https://www.google.com/chrome/static/images/favicons/favicon-32x32.png'}
                     className="favicon"
