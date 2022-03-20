@@ -121,10 +121,18 @@
 }
 
 .tabs .tab-group {
-  min-width: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
   height: 15px;
   width: 15px;
   margin-right: 10px;
+}
+
+.tabs .tab-group > div {
+  height: 15px;
+  width: 15px;
   border-radius: 50%;
 }
 

@@ -25,9 +25,9 @@ function Tab(props) {
     return (
         <div key={props.tab.id} className="tab">
             <div>
-                <div
-                    style={{background: color}}
-                    className={`${groupId > 0 ? 'tab-group' : ''}`}> </div>
+                <div className={`${groupId > 0 ? 'tab-group' : ''}`}>
+                    <div style={{background: color}}> </div>
+                </div>
                 <img
                     src={favIconUrl ? favIconUrl : 'https://www.google.com/chrome/static/images/favicons/favicon-32x32.png'}
                     className="favicon"
