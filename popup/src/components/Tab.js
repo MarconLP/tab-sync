@@ -13,6 +13,11 @@ function Tab(props) {
         })
     }
 
+    const toggleTabGroup = e => {
+        e.stopPropagation()
+        chrome.tabGroups.update(tabGroup.id, { collapsed: !tabGroup.collapsed})
+    }
+
     const colorMap = {
         grey: '#606468',
         blue: '#1b72e8',
@@ -38,7 +43,7 @@ function Tab(props) {
                 <div className={`${groupId > 0 ? 'tab-group' : ''}`}>
                     <div
                         className={props.isParent ? 'parent' : ''}
-                        onClick={() => console.log('collapsible')}
+                        onClick={toggleTabGroup}
                         style={{ background: color }}> </div>
                 </div>
                 <img

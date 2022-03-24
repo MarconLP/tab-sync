@@ -34,6 +34,13 @@ function App() {
         }
     })
 
+    chrome.tabGroups.onUpdated.addListener(change => {
+        let localDevices = devices
+
+        localDevices[0].chromeSession.tabGroups.find(x => x.id === change.id).collapsed = change.collapsed
+        setDevices([...localDevices])
+    })
+
     useEffect(() => {
         syncTabs()
     }, [])
