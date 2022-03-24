@@ -84,7 +84,7 @@
   margin-top: 0;
 }
 
-.tabs > div {
+.tab {
   box-sizing: border-box;
   height: 35px;
   padding: 8px;
@@ -95,22 +95,22 @@
   cursor: pointer;
 }
 
-.tabs > div:hover {
+.tab:hover {
   background-color: rgba(0,0,0,0.1);
 }
 
-.tabs > div > div {
+.tab > div {
   display: flex;
   align-items: center;
 }
 
-.tabs > div > div:first-of-type {
+.tab > div:first-of-type {
   flex: 1 0;
   min-width: 0;
   margin-right: 10px;
 }
 
-.tabs > div > div:last-of-type > svg {
+.tab > div:last-of-type > svg {
   height: 15px;
   width: 15px;
 }
@@ -119,6 +119,39 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.tabs .tab-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  height: 15px;
+  width: 15px;
+  margin-right: 10px;
+}
+
+.tabs .tab-group > div {
+  position: relative;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+}
+
+.tabs .tab-group > div::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-left: 2px solid #dee2e6;
+  border-bottom: 2px solid #dee2e6;
+  top: -26px;
+  left: 6px;
+  width: 16px;
+  height: calc(100% + 17.5px);
+}
+
+.tabs .tab-group > div.parent::after {
+  border: none;
 }
 
 .tabs .favicon {

@@ -1,4 +1,4 @@
-/*global chrome*/
+/* global chrome */
 import {ReactComponent as CloseIcon} from "../assets/xmark.svg";
 import * as React from "react";
 
@@ -11,10 +11,29 @@ function Tab(props) {
         })
     }
 
+    const colorMap = {
+        grey: '#606468',
+        blue: '#1b72e8',
+        red: '#db3025',
+        yellow: '#faab00',
+        green: '#168138',
+        pink: '#cf1783',
+        purple: '#a142f3',
+        cyan: '#037b83',
+        orange: '#f9903e'
+    }
+
+    let color = ''
+    if (props.tab.groupId > 0 && props.isParent) {
+        color = colorMap[props.tabGroups.find(x => x.id === props.tab.groupId).color]
+    }
+
     return (
-        <div key={props.tab.id} onClick={handleClick}>
+        <div key={props.tab.id} onClick={handleClick} className="tab">
             <div>
-                {/*<span>group</span>*/}
+                <div className={`${groupId > 0 ? 'tab-group' : ''}`}>
+                    <div className={props.isParent ? 'parent' : ''} style={{background: color}}> </div>
+                </div>
                 <img
                     src={favIconUrl ? favIconUrl : 'https://www.google.com/chrome/static/images/favicons/favicon-32x32.png'}
                     className="favicon"
