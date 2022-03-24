@@ -18,7 +18,7 @@ function Tab(props) {
     }
 
     let color = ''
-    if (props.tab.groupId > 0) {
+    if (props.tab.groupId > 0 && props.isParent) {
         color = colorMap[props.tabGroups.find(x => x.id === props.tab.groupId).color]
     }
 
@@ -26,7 +26,7 @@ function Tab(props) {
         <div key={props.tab.id} className="tab">
             <div>
                 <div className={`${groupId > 0 ? 'tab-group' : ''}`}>
-                    <div style={{background: color}}> </div>
+                    <div className={props.isParent ? 'parent' : ''} style={{background: color}}> </div>
                 </div>
                 <img
                     src={favIconUrl ? favIconUrl : 'https://www.google.com/chrome/static/images/favicons/favicon-32x32.png'}

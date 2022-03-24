@@ -131,9 +131,26 @@
 }
 
 .tabs .tab-group > div {
+  position: relative;
   height: 15px;
   width: 15px;
   border-radius: 50%;
+}
+
+.tabs .tab-group > div::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-left: 2px solid #dee2e6;
+  border-bottom: 2px solid #dee2e6;
+  top: -26px;
+  left: 6px;
+  width: 16px;
+  height: calc(100% + 17.5px);
+}
+
+.tabs .tab-group > div.parent::after {
+  border: none;
 }
 
 .tabs .favicon {
