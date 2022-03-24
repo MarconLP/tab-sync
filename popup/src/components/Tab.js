@@ -4,6 +4,8 @@ import * as React from "react";
 
 function Tab(props) {
     const {title, url, groupId, favIconUrl} = props.tab
+    let tabGroup = props.tabGroups.find(x => x.id === props.tab.groupId)
+    if (!tabGroup) tabGroup = {}
 
     const handleClick = () => {
         chrome.tabs.create({
@@ -25,21 +27,27 @@ function Tab(props) {
 
     let color = ''
     if (props.tab.groupId > 0 && props.isParent) {
-        color = colorMap[props.tabGroups.find(x => x.id === props.tab.groupId).color]
+        color = colorMap[tabGroup.color]
     }
 
+    const childrenDisplay = tabGroup.collapsed && !props.isParent ? 'none' : ''
+    const parentDisplay = tabGroup.collapsed && props.isParent ? 'none' : ''
     return (
-        <div key={props.tab.id} onClick={handleClick} className="tab">
+        <div key={props.tab.id} onClick={handleClick} className="tab" style={{display: childrenDisplay}}>
             <div>
                 <div className={`${groupId > 0 ? 'tab-group' : ''}`}>
-                    <div className={props.isParent ? 'parent' : ''} style={{background: color}}> </div>
+                    <div
+                        className={props.isParent ? 'parent' : ''}
+                        onClick={() => console.log('collapsible')}
+                        style={{ background: color }}> </div>
                 </div>
                 <img
                     src={favIconUrl ? favIconUrl : 'https://www.google.com/chrome/static/images/favicons/favicon-32x32.png'}
                     className="favicon"
                     loading="lazy"
-                    alt="test"/>
-                <span className="title">{title}</span>
+                    alt="test"
+                    style={{display: parentDisplay}} />
+                <span className="title">{tabGroup.collapsed && props.isParent ? '< ... >' : title}</span>
             </div>
             <div>
                 <CloseIcon />
