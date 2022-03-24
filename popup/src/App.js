@@ -36,6 +36,7 @@ function App() {
 
     chrome.tabGroups.onUpdated.addListener(change => {
         let localDevices = devices
+        if (!localDevices) return
 
         localDevices[0].chromeSession.tabGroups.find(x => x.id === change.id).collapsed = change.collapsed
         setDevices([...localDevices])
