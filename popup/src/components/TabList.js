@@ -11,7 +11,7 @@ function TabList(props) {
                 const isParent= tab.groupId !== lastGroupId
                 lastGroupId = tab.groupId
                 return (
-                    <Tab isParent={isParent} tab={tab} tabGroups={props.tabGroups} key={tab.id} />
+                    <Tab isParent={isParent} tab={tab} tabGroups={props.tabGroups} view={props.view} key={tab.id} />
                 )
             })}
         </div>

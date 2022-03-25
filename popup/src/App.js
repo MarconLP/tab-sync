@@ -29,7 +29,6 @@ function App() {
 
     chrome.storage.onChanged.addListener(changes => {
         if (changes.devices) {
-            console.log(changes.devices)
             syncTabs()
         }
     })
@@ -56,6 +55,7 @@ function App() {
                         <div className="windows" key={device.name} style={{transform: `translateX(-${view * 368}px)`}}>
                             {device.chromeSession.windows.map(window => {
                                 return <TabList
+                                    view={view}
                                     window={window}
                                     tabGroups={device.chromeSession.tabGroups}
                                     key={window.id} />

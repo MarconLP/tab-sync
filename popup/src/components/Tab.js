@@ -13,9 +13,17 @@ function Tab(props) {
         })
     }
 
-    const toggleTabGroup = e => {
+    const toggleTabGroup = async e => {
         e.stopPropagation()
-        chrome.tabGroups.update(tabGroup.id, { collapsed: !tabGroup.collapsed})
+        if (props.view === 0) {
+            chrome.tabGroups.update(tabGroup.id, { collapsed: !tabGroup.collapsed})
+        } else {
+            let devices = (await chrome.storage.local.get(['devices'])).devices
+
+            devices[props.view].chromeSession.tabGroups.find(x => x.id === tabGroup.id).collapsed = !devices[props.view].chromeSession.tabGroups.find(x => x.id === tabGroup.id).collapsed
+
+            await chrome.storage.local.set({ devices })
+        }
     }
 
     const colorMap = {
