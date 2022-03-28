@@ -55,6 +55,8 @@ function App() {
                         <div className="windows" key={device.name} style={{transform: `translateX(-${view * 368}px)`}}>
                             {device.chromeSession.windows.map(window => {
                                 return <TabList
+                                    devices={devices}
+                                    setDevices={setDevices}
                                     view={view}
                                     window={window}
                                     tabGroups={device.chromeSession.tabGroups}
