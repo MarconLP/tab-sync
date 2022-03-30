@@ -41,6 +41,9 @@ function Tab(props) {
         color = colorMap[tabGroup.color]
     }
 
+    let tabTitle = "< ... >"
+    if (tabGroup.title) tabTitle = tabGroup.title
+
     const childrenDisplay = tabGroup.collapsed && !props.isParent ? 'none' : ''
     const parentDisplay = tabGroup.collapsed && props.isParent ? 'none' : ''
     return (
@@ -58,7 +61,7 @@ function Tab(props) {
                     loading="lazy"
                     alt="test"
                     style={{display: parentDisplay}} />
-                <span className="title">{tabGroup.collapsed && props.isParent ? '< ... >' : title}</span>
+                <span className="title">{tabGroup.collapsed && props.isParent ? tabTitle : title}</span>
             </div>
             <div>
                 <CloseIcon />
