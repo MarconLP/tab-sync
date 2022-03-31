@@ -33,6 +33,12 @@ function App() {
         }
     })
 
+    chrome.tabs.onRemoved.addListener(id => {
+        if (id) {
+            syncTabs()
+        }
+    })
+
     chrome.tabGroups.onUpdated.addListener(change => {
         let localDevices = devices
         if (!localDevices) return

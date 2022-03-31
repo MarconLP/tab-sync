@@ -3,7 +3,7 @@ import {ReactComponent as CloseIcon} from "../assets/xmark.svg";
 import * as React from "react";
 
 function Tab(props) {
-    const {title, url, groupId, favIconUrl} = props.tab
+    const {title, url, id, groupId, favIconUrl} = props.tab
     let tabGroup = props.tabGroups.find(x => x.id === props.tab.groupId)
     if (!tabGroup) tabGroup = {}
 
@@ -15,6 +15,8 @@ function Tab(props) {
 
     const toggleTabGroup = async e => {
         e.stopPropagation()
+
+        // check if tab is local or remote
         if (props.view === 0) {
             chrome.tabGroups.update(tabGroup.id, { collapsed: !tabGroup.collapsed})
         } else {
@@ -22,6 +24,18 @@ function Tab(props) {
             devices[props.view].chromeSession.tabGroups.find(x => x.id === tabGroup.id).collapsed = !devices[props.view].chromeSession.tabGroups.find(x => x.id === tabGroup.id).collapsed
             props.setDevices([...devices])
         }
+    }
+
+    const closeTab = e => {
+        e.stopPropagation()
+
+        // check if tab is local or remote
+        if (props.view === 0) {
+            chrome.tabs.remove(id)
+        } else {
+            // close remote tab
+        }
+        console.log('closing tab lol')
     }
 
     const colorMap = {
@@ -63,7 +77,7 @@ function Tab(props) {
                     style={{display: parentDisplay}} />
                 <span className="title">{tabGroup.collapsed && props.isParent ? tabTitle : title}</span>
             </div>
-            <div>
+            <div onClick={closeTab}>
                 <CloseIcon />
             </div>
         </div>
