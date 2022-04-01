@@ -8,6 +8,10 @@ function Tab(props) {
     if (!tabGroup) tabGroup = {}
 
     const handleClick = () => {
+
+        // check if tab is in closed tabGroup
+        if (groupId && tabGroup.collapsed) return
+
         chrome.tabs.create({
             url: url
         })
