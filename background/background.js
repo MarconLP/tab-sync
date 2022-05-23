@@ -33,11 +33,17 @@ try {
 
         fetch(`${url}/${auth_token}`, requestOptions)
             .then(response => response.json())
-            .then(result => {
-                chrome.storage.local.set({ devices: result.devices })
+            .then(async result => {
+                const devices = result.devices
+
+                devices.map(device => {
+                    device.chromeSession.windows.map(window => {
+                        window.tabs = window.tabs.filter(tab => !devices.find(device => device.name === device.name).closedTabs.includes(tab.id))
+                    })
+                })
+                chrome.storage.local.set({ devices })
             })
             .catch(error => console.log('error', error));
-
     }
 
     async function update() {

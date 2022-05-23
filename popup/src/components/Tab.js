@@ -1,9 +1,10 @@
 /* global chrome */
-import {ReactComponent as CloseIcon} from "../assets/xmark.svg";
+import { ReactComponent as CloseIcon } from "../assets/xmark.svg";
 import * as React from "react";
+import axios from "axios";
 
 function Tab(props) {
-    const {title, url, id, groupId, favIconUrl} = props.tab
+    const { title, url, id, groupId, favIconUrl } = props.tab
     let tabGroup = props.tabGroups.find(x => x.id === props.tab.groupId)
     if (!tabGroup) tabGroup = {}
 
@@ -22,7 +23,7 @@ function Tab(props) {
 
         // check if tab is local or remote
         if (props.view === 0) {
-            chrome.tabGroups.update(tabGroup.id, { collapsed: !tabGroup.collapsed})
+            chrome.tabGroups.update(tabGroup.id, { collapsed: !tabGroup.collapsed })
         } else {
             let devices = props.devices
             devices[props.view].chromeSession.tabGroups.find(x => x.id === tabGroup.id).collapsed = !devices[props.view].chromeSession.tabGroups.find(x => x.id === tabGroup.id).collapsed
@@ -30,16 +31,30 @@ function Tab(props) {
         }
     }
 
-    const closeTab = e => {
+    const closeTab = async e => {
         e.stopPropagation()
 
         // check if tab is local or remote
         if (props.view === 0) {
             chrome.tabs.remove(id)
         } else {
-            // close remote tab
+            const auth_token = (await chrome.storage.local.get(['auth_token'])).auth_token
+            const response = await axios({
+                url: `http://localhost:3000/${auth_token}/${props.deviceName}`,
+                method: 'DELETE',
+                data: { tabId: id }
+            })
+
+            const devices = props.devices
+            let closedTabs = devices.find(device => device.name === props.deviceName).closedTabs
+            closedTabs.push(id)
+            devices.map(device => {
+                device.chromeSession.windows.map(window => {
+                    window.tabs = window.tabs.filter(tab => !closedTabs.includes(tab.id))
+                })
+            })
+            chrome.storage.local.set({ devices })
         }
-        console.log('closing tab lol')
     }
 
     const colorMap = {
@@ -65,24 +80,24 @@ function Tab(props) {
     const childrenDisplay = tabGroup.collapsed && !props.isParent ? 'none' : ''
     const parentDisplay = tabGroup.collapsed && props.isParent ? 'none' : ''
     return (
-        <div key={props.tab.id} onClick={handleClick} className="tab" style={{display: childrenDisplay}}>
+        <div key={props.tab.id} onClick={handleClick} className="tab" style={{ display: childrenDisplay }}>
             <div>
                 <div className={`${groupId > 0 ? 'tab-group' : ''}`}>
                     <div
                         className={props.isParent ? 'parent' : ''}
                         onClick={toggleTabGroup}
-                        style={{ background: color }}> </div>
+                        style={{ background: color }}></div>
                 </div>
                 <img
                     src={favIconUrl ? favIconUrl : 'https://www.google.com/chrome/static/images/favicons/favicon-32x32.png'}
                     className="favicon"
                     loading="lazy"
                     alt="test"
-                    style={{display: parentDisplay}} />
+                    style={{ display: parentDisplay }}/>
                 <span className="title">{tabGroup.collapsed && props.isParent ? tabTitle : title}</span>
             </div>
-            <div onClick={closeTab}>
-                <CloseIcon />
+            <div onClick={!tabGroup.collapsed ? closeTab : null}>
+                {!tabGroup.collapsed && <CloseIcon/>}
             </div>
         </div>
     )

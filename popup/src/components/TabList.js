@@ -12,6 +12,7 @@ function TabList(props) {
                 lastGroupId = tab.groupId
                 return (
                     <Tab
+                        deviceName={props.deviceName}
                         devices={props.devices}
                         setDevices={props.setDevices}
                         isParent={isParent}
