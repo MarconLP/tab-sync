@@ -12,7 +12,7 @@ function DeviceList(props) {
         const token = (await chrome.storage.local.get(['auth_token'])).auth_token
 
         await axios({
-            url: `https://tab-sync-backend.vercel.app/${token}`,
+            url: `${process.env.REACT_APP_BACKEND_HOST}/${token}`,
             method: 'DELETE',
             data: {
                 name: device.name

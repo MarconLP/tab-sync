@@ -43,7 +43,7 @@ try {
                     chrome.tabs.remove(tab)
                 })
 
-                fetch(`http://localhost:3000/${auth_token}/${device_name}/closedTabs`, { method: 'DELETE' })
+                fetch(`${url}/${auth_token}/${device_name}/closedTabs`, { method: 'DELETE' })
                     .then(response => response.text())
                     .then(result => console.log(result))
                     .catch(error => console.log('error', error));

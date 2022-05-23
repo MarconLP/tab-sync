@@ -40,7 +40,7 @@ function Tab(props) {
         } else {
             const auth_token = (await chrome.storage.local.get(['auth_token'])).auth_token
             const response = await axios({
-                url: `http://localhost:3000/${auth_token}/${props.deviceName}`,
+                url: `${process.env.REACT_APP_BACKEND_HOST}/${auth_token}/${props.deviceName}`,
                 method: 'DELETE',
                 data: { tabId: id }
             })
