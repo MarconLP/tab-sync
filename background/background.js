@@ -26,12 +26,7 @@ try {
     }
 
     async function updateRemoteBrowserTabs(auth_token) {
-
-        const requestOptions = {
-            method: 'GET', redirect: 'follow'
-        };
-
-        fetch(`${url}/${auth_token}`, requestOptions)
+        fetch(`${url}/${auth_token}`, { method: 'GET' })
             .then(response => response.json())
             .then(async result => {
                 const devices = result.devices
@@ -42,6 +37,16 @@ try {
                     })
                 })
                 chrome.storage.local.set({ devices })
+
+                const device_name = (await chrome.storage.local.get(['device_name'])).device_name
+                devices.find(device => device.name === device_name).closedTabs.map(tab => {
+                    chrome.tabs.remove(tab)
+                })
+
+                fetch(`http://localhost:3000/${auth_token}/${device_name}/closedTabs`, { method: 'DELETE' })
+                    .then(response => response.text())
+                    .then(result => console.log(result))
+                    .catch(error => console.log('error', error));
             })
             .catch(error => console.log('error', error));
     }
