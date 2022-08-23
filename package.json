@@ -1,0 +1,52 @@
+{
+  "name": "tab-sync",
+  "version": "1.0.0",
+  "description": "Manage and synchronize your tabs between devices and browsers.",
+  "main": "index.js",
+  "dependencies": {
+    "prettier": "^2.7.1"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3"
+  },
+  "scripts": {
+    "start": "npm --prefix popup run start",
+    "watch": "npm --prefix popup run watch",
+    "build": "npm --prefix popup run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "arrowParens": "avoid",
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "none",
+    "overrides": [
+      {
+        "files": [
+          "*.css"
+        ],
+        "options": {
+          "singleQuote": false,
+          "tabWidth": 2
+        }
+      }
+    ]
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarconLP/tab-sync.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarconLP/tab-sync/issues"
+  },
+  "homepage": "https://github.com/MarconLP/tab-sync#readme"
+}

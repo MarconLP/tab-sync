@@ -12,7 +12,6 @@
     "axios": "^0.26.1",
     "dotenv": "^16.0.1",
     "npm-watch": "^0.11.0",
-    "prettier": "^2.7.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -37,22 +36,6 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
-  },
-  "prettier": {
-    "tabWidth": 4,
-    "arrowParens": "avoid",
-    "singleQuote": true,
-    "semi": false,
-    "trailingComma": "none",
-    "overrides": [
-      {
-        "files": ["*.css"],
-        "options": {
-          "singleQuote": false,
-          "tabWidth": 2
-        }
-      }
     ]
   },
   "browserslist": {
