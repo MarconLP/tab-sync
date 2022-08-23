@@ -1,7 +1,7 @@
 /*global chrome*/
-import axios from "axios";
-import {ReactComponent as RotateIcon} from "../assets/rotate.svg";
-import {useState} from "react";
+import axios from 'axios'
+import { ReactComponent as RotateIcon } from '../assets/rotate.svg'
+import { useState } from 'react'
 
 function DeviceList(props) {
     const [rotating, setRotating] = useState(false)
@@ -9,7 +9,8 @@ function DeviceList(props) {
     const handleDelete = async (e, device) => {
         if (!(e.shiftKey && e.altKey)) return
 
-        const token = (await chrome.storage.local.get(['auth_token'])).auth_token
+        const token = (await chrome.storage.local.get(['auth_token']))
+            .auth_token
 
         await axios({
             url: `${process.env.REACT_APP_BACKEND_HOST}/${token}`,
@@ -34,17 +35,20 @@ function DeviceList(props) {
                 {props.devices.map((device, i) => {
                     return (
                         <div
-                            onContextMenu={(e) => handleDelete(e, device)}
+                            onContextMenu={e => handleDelete(e, device)}
                             key={device.name}
                             onClick={() => props.setView(i)}
-                            className={`${i === props.view ? 'active-device' : ''}`}>
+                            className={`${
+                                i === props.view ? 'active-device' : ''
+                            }`}
+                        >
                             <span>{device.name}</span>
                         </div>
                     )
                 })}
             </div>
             <div className={`sync`} onClick={handleSync}>
-                <RotateIcon className={`icon ${rotating ? 'rotate' : ''}`}/>
+                <RotateIcon className={`icon ${rotating ? 'rotate' : ''}`} />
             </div>
         </div>
     )

@@ -1,14 +1,14 @@
-import Tab from "./Tab";
+import Tab from './Tab'
 
 function TabList(props) {
     if (!props.window) return null
 
-    let lastGroupId = ""
+    let lastGroupId = ''
 
     return (
         <div className="tabs">
             {props.window.tabs.map(tab => {
-                const isParent= tab.groupId !== lastGroupId
+                const isParent = tab.groupId !== lastGroupId
                 lastGroupId = tab.groupId
                 return (
                     <Tab
@@ -19,7 +19,8 @@ function TabList(props) {
                         tab={tab}
                         tabGroups={props.tabGroups}
                         view={props.view}
-                        key={tab.id} />
+                        key={tab.id}
+                    />
                 )
             })}
         </div>

@@ -30,7 +30,7 @@
 }
 
 .devices > div:hover {
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .deviceList .sync {
@@ -44,7 +44,7 @@
 }
 
 .deviceList .sync:hover {
-  background: rgba(0,0,0,.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .deviceList .sync .icon.rotate {
@@ -76,7 +76,7 @@
 
 .tabs {
   margin-top: 8px;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .tabs:first-of-type {
@@ -95,7 +95,7 @@
 }
 
 .tab:hover {
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .tab > div {

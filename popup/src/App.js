@@ -1,9 +1,9 @@
 /*global chrome*/
-import './App.css';
-import * as React from 'react';
-import {useEffect, useState} from "react";
-import TabList from "./components/TabList";
-import DeviceList from "./components/DeviceList";
+import './App.css'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
+import TabList from './components/TabList'
+import DeviceList from './components/DeviceList'
 
 function App() {
     const [view, setView] = useState(0)
@@ -43,7 +43,9 @@ function App() {
         let localDevices = devices
         if (!localDevices) return
 
-        localDevices[0].chromeSession.tabGroups.find(x => x.id === change.id).collapsed = change.collapsed
+        localDevices[0].chromeSession.tabGroups.find(
+            x => x.id === change.id
+        ).collapsed = change.collapsed
         setDevices([...localDevices])
     })
 
@@ -58,16 +60,27 @@ function App() {
             <div className="windowList">
                 {devices.map(device => {
                     return (
-                        <div className="windows" key={device.name} style={{transform: `translateX(-${view * 368}px)`}}>
+                        <div
+                            className="windows"
+                            key={device.name}
+                            style={{
+                                transform: `translateX(-${view * 368}px)`
+                            }}
+                        >
                             {device.chromeSession.windows.map(window => {
-                                return <TabList
-                                    deviceName={device.name}
-                                    devices={devices}
-                                    setDevices={setDevices}
-                                    view={view}
-                                    window={window}
-                                    tabGroups={device.chromeSession.tabGroups}
-                                    key={window.id} />
+                                return (
+                                    <TabList
+                                        deviceName={device.name}
+                                        devices={devices}
+                                        setDevices={setDevices}
+                                        view={view}
+                                        window={window}
+                                        tabGroups={
+                                            device.chromeSession.tabGroups
+                                        }
+                                        key={window.id}
+                                    />
+                                )
                             })}
                             <TabList />
                         </div>
@@ -75,7 +88,7 @@ function App() {
                 })}
             </div>
         </div>
-    );
+    )
 }
 
-export default App;
+export default App
