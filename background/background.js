@@ -39,10 +39,9 @@ try {
                 devices.map(device => {
                     device.chromeSession.windows.map(window => {
                         window.tabs = window.tabs.filter(
-                            tab =>
-                                !devices
-                                    .find(device => device.name === device.name)
-                                    .closedTabs.includes(tab.id)
+                            tab =>!devices
+                                .find(currentDevice => currentDevice.name === device.name)
+                                .closedTabs.includes(tab.id)
                         )
                     })
                 })

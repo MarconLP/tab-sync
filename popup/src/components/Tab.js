@@ -45,10 +45,10 @@ function Tab(props) {
         } else {
             const auth_token = (await chrome.storage.local.get(['auth_token']))
                 .auth_token
-            const response = await axios({
+            const response = axios({
                 url: `${process.env.REACT_APP_BACKEND_HOST}/${auth_token}/${props.deviceName}`,
                 method: 'DELETE',
-                data: { tabId: id }
+                data: { tabIds: [id] }
             })
 
             const devices = props.devices
@@ -56,6 +56,48 @@ function Tab(props) {
                 device => device.name === props.deviceName
             ).closedTabs
             closedTabs.push(id)
+            devices.map(device => {
+                device.chromeSession.windows.map(window => {
+                    window.tabs = window.tabs.filter(
+                        tab => !closedTabs.includes(tab.id)
+                    )
+                })
+            })
+            chrome.storage.local.set({ devices })
+        }
+    }
+
+    const closeTabGroup = async e => {
+        e.stopPropagation()
+
+        // check if tab is local or remote
+        if (props.view === 0) {
+            const groupTabs = await chrome.tabs.query({groupId});
+            await chrome.tabs.remove(groupTabs.map(t => t.id));
+        } else {
+            const auth_token = (await chrome.storage.local.get(['auth_token']))
+                .auth_token
+            let groupTabs = []
+            props.devices.find(device => device.name === props.deviceName)
+                .chromeSession.windows.map(window => (
+                    window.tabs.map(tab => {
+                        if (tab.groupId === groupId) {
+                            groupTabs.push(tab.id)
+                        }
+                    })
+            ))
+
+            const response = axios({
+                url: `${process.env.REACT_APP_BACKEND_HOST}/${auth_token}/${props.deviceName}`,
+                method: 'DELETE',
+                data: { tabIds: groupTabs }
+            })
+
+            const devices = props.devices
+            let closedTabs = devices.find(
+                device => device.name === props.deviceName
+            ).closedTabs
+            closedTabs = [...closedTabs, ...groupTabs]
             devices.map(device => {
                 device.chromeSession.windows.map(window => {
                     window.tabs = window.tabs.filter(
@@ -119,8 +161,8 @@ function Tab(props) {
                     {tabGroup.collapsed && props.isParent ? tabTitle : title}
                 </span>
             </div>
-            <div onClick={!tabGroup.collapsed ? closeTab : null}>
-                {!tabGroup.collapsed && <CloseIcon />}
+            <div onClick={tabGroup.collapsed ? closeTabGroup : closeTab}>
+                <CloseIcon />
             </div>
         </div>
     )
