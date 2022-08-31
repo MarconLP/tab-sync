@@ -72,20 +72,21 @@ function Tab(props) {
 
         // check if tab is local or remote
         if (props.view === 0) {
-            const groupTabs = await chrome.tabs.query({groupId});
-            await chrome.tabs.remove(groupTabs.map(t => t.id));
+            const groupTabs = await chrome.tabs.query({ groupId })
+            await chrome.tabs.remove(groupTabs.map(t => t.id))
         } else {
             const auth_token = (await chrome.storage.local.get(['auth_token']))
                 .auth_token
             let groupTabs = []
-            props.devices.find(device => device.name === props.deviceName)
-                .chromeSession.windows.map(window => (
+            props.devices
+                .find(device => device.name === props.deviceName)
+                .chromeSession.windows.map(window =>
                     window.tabs.map(tab => {
                         if (tab.groupId === groupId) {
                             groupTabs.push(tab.id)
                         }
                     })
-            ))
+                )
 
             const response = axios({
                 url: `${process.env.REACT_APP_BACKEND_HOST}/${auth_token}/${props.deviceName}`,
