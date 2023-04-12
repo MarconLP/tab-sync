@@ -14,11 +14,19 @@ function Tab(props) {
             const urls = props.tabs
                 .filter(tab => tab.groupId === tabGroup.id)
                 .map(tab => tab.url)
-            const tabsIds = await urls.map(async url => {
+
+            const tabIds = []
+            for (const url of urls) {
                 const tab = await chrome.tabs.create({ url })
-                return tab.id
+                tabIds.push(tab.id)
+            }
+
+            const groupId = await chrome.tabs.group({ tabIds: tabIds })
+            await chrome.tabGroups.update(groupId, {
+                collapsed: false,
+                title: tabGroup.title,
+                color: tabGroup.color
             })
-            await chrome.tabs.group({ tabIds: tabsIds })
             return
         }
 
