@@ -11,8 +11,7 @@ function Tab(props) {
     const handleClick = async () => {
         // check if tab is in closed tabGroup
         if (groupId && tabGroup.collapsed) {
-            const tabs = await chrome.tabs.query({})
-            const urls = tabs
+            const urls = props.tabs
                 .filter(tab => tab.groupId === tabGroup.id)
                 .map(tab => tab.url)
             const tabsIds = await urls.map(async url => {
