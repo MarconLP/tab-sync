@@ -110,6 +110,11 @@ function Tab(props) {
         }
     }
 
+    const addFaviconFallback = e => {
+        e.target.src =
+            'https://www.google.com/chrome/static/images/favicons/favicon-32x32.png'
+    }
+
     const colorMap = {
         grey: '#606468',
         blue: '#1b72e8',
@@ -157,6 +162,7 @@ function Tab(props) {
                     loading="lazy"
                     alt="test"
                     style={{ display: parentDisplay }}
+                    onError={addFaviconFallback}
                 />
                 <span className="title">
                     {tabGroup.collapsed && props.isParent ? tabTitle : title}
