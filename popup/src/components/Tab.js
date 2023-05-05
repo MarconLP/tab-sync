@@ -1,10 +1,15 @@
 /* global chrome */
 import { ReactComponent as CloseIcon } from '../assets/xmark.svg'
+import { useRef } from 'react'
 import * as React from 'react'
 import axios from 'axios'
 
+const DEFAULT_FAVICON_URL =
+    'https://www.google.com/chrome/static/images/favicons/favicon-32x32.png'
+
 function Tab(props) {
     const { title, url, id, groupId, favIconUrl } = props.tab
+    const favIconRef = useRef(null)
     let tabGroup = props.tabGroups.find(x => x.id === props.tab.groupId)
     if (!tabGroup) tabGroup = {}
 
@@ -110,6 +115,12 @@ function Tab(props) {
         }
     }
 
+    const onError = () => {
+        // prevents the infinite loop in case the default url is invalid too
+        if (favIconRef.current.src === DEFAULT_FAVICON_URL) return
+        favIconRef.current.src = DEFAULT_FAVICON_URL
+    }
+
     const colorMap = {
         grey: '#606468',
         blue: '#1b72e8',
@@ -148,11 +159,9 @@ function Tab(props) {
                     ></div>
                 </div>
                 <img
-                    src={
-                        favIconUrl
-                            ? favIconUrl
-                            : 'https://www.google.com/chrome/static/images/favicons/favicon-32x32.png'
-                    }
+                    ref={favIconRef}
+                    src={favIconUrl ? favIconUrl : DEFAULT_FAVICON_URL}
+                    onError={onError}
                     className="favicon"
                     loading="lazy"
                     alt="test"
