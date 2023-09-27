@@ -20,6 +20,7 @@ function TabList(props) {
                         tabGroups={props.tabGroups}
                         view={props.view}
                         key={tab.id}
+                        tabs={props.window.tabs}
                     />
                 )
             })}
