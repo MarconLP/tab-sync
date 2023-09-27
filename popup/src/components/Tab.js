@@ -13,13 +13,36 @@ function Tab(props) {
     let tabGroup = props.tabGroups.find(x => x.id === props.tab.groupId)
     if (!tabGroup) tabGroup = {}
 
-    const handleClick = () => {
-        // check if tab is in closed tabGroup
-        if (groupId && tabGroup.collapsed) return
+    const sleep = ms => {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    }
 
-        chrome.tabs.create({
-            url: url
-        })
+    const handleClick = async () => {
+        // check if tab is in closed tabGroup
+        if (groupId && tabGroup.collapsed) {
+            const urls = props.tabs
+                .filter(tab => tab.groupId === tabGroup.id)
+                .map(tab => tab.url)
+
+            const tabIds = []
+            for (const url of urls) {
+                const tab = await chrome.tabs.create({ url, active: false })
+                tabIds.push(tab.id)
+            }
+
+            const groupId = await chrome.tabs.group({
+                tabIds
+            })
+            await chrome.tabGroups.update(groupId, {
+                collapsed: true,
+                title: tabGroup.title,
+                color: tabGroup.color
+            })
+        } else {
+            chrome.tabs.create({
+                url: url
+            })
+        }
     }
 
     const toggleTabGroup = async e => {

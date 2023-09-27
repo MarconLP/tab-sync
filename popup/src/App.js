@@ -43,9 +43,13 @@ function App() {
         let localDevices = devices
         if (!localDevices) return
 
-        localDevices[0].chromeSession.tabGroups.find(
+        const currentGroup = localDevices[0].chromeSession.tabGroups.find(
             x => x.id === change.id
-        ).collapsed = change.collapsed
+        )
+
+        if (!currentGroup) return
+
+        currentGroup.collapsed = change.collapsed
         setDevices([...localDevices])
     })
 
