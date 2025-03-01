@@ -2,12 +2,73 @@ try {
     const url = 'https://tab-sync-backend.vercel.app'
     chrome.alarms.create('sync_tabs', { periodInMinutes: 5 })
 
+    async function getYoutubeTimestamp(tabId) {
+        try {
+            const tab = await chrome.tabs.get(tabId)
+            if (tab.status !== 'complete') {
+                return null
+            }
+
+            const results = await chrome.scripting.executeScript({
+                target: { tabId },
+                func: () => {
+                    try {
+                        const videoElement = document.querySelector('video')
+                        if (videoElement && !isNaN(videoElement.currentTime)) {
+                            const time = Math.floor(videoElement.currentTime)
+                            return time
+                        } else {
+                            return null
+                        }
+                    } catch (err) {
+                        return null
+                    }
+                }
+            })
+
+            return results?.[0]?.result || null
+        } catch (err) {
+            return null
+        }
+    }
+
+    async function processYoutubeTabs(windows) {
+        let youtubeTabsCount = 0
+        let updatedTabsCount = 0
+
+        for (const window of windows) {
+            for (const tab of window.tabs) {
+                if (tab.url && tab.url.includes('youtube.com/watch')) {
+                    youtubeTabsCount++
+                    try {
+                        const timestamp = await getYoutubeTimestamp(tab.id)
+
+                        if (timestamp && timestamp > 0) {
+                            const tabUrl = new URL(tab.url)
+                            tabUrl.searchParams.delete('t')
+                            tabUrl.searchParams.set('t', timestamp)
+                            tab.url = tabUrl.toString()
+                            updatedTabsCount++
+                        }
+                    } catch (err) {
+                        console.log(err)
+                    }
+                }
+            }
+        }
+
+        return windows
+    }
+
     async function updateLocalBrowserTabs(auth_token) {
+        let windows = await chrome.windows.getAll({ populate: true })
+        windows = await processYoutubeTabs(windows)
+
         const device = {
             name: (await chrome.storage.local.get(['device_name'])).device_name,
             chromeSession: {
                 tabGroups: await chrome.tabGroups.query({}),
-                windows: await chrome.windows.getAll({ populate: true })
+                windows: windows
             }
         }
 
